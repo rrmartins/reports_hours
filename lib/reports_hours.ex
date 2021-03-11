@@ -1,5 +1,5 @@
 defmodule ReportsHours do
-  alias ReportsHours.Parser
+  alias ReportsHours.{Build, Parser}
 
   @available_person [
     :rodrigo,
@@ -74,7 +74,7 @@ defmodule ReportsHours do
     months = merge_maps(months1, months2)
     years = merge_maps(years1, years2)
 
-    build_report(hours, months, years)
+    Build.call(hours, months, years)
   end
 
   defp merge_maps(map1, map2) when is_map(map1) do
@@ -108,7 +108,7 @@ defmodule ReportsHours do
     year = Map.put(years[person], yr, years[person][yr] + hour)
     years = Map.put(years, person, year)
 
-    build_report(hours, months, years)
+    Build.call(hours, months, years)
   end
 
   defp report_head do
@@ -118,14 +118,6 @@ defmodule ReportsHours do
     years = Enum.into(@years, %{}, &{&1, 0})
     hours_per_year = Enum.into(@available_person, %{}, &{&1, years})
 
-    build_report(all_hours, hours_per_month, hours_per_year)
-  end
-
-  defp build_report(all_hours, hours_per_month, hours_per_year) do
-    %{
-      "all_hours" => all_hours,
-      "hours_per_month" => hours_per_month,
-      "hours_per_year" => hours_per_year
-    }
+    Build.call(all_hours, hours_per_month, hours_per_year)
   end
 end
