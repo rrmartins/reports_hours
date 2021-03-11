@@ -1,4 +1,5 @@
 defmodule ReportsHours do
+
   alias ReportsHours.Parser
 
   @available_person [
