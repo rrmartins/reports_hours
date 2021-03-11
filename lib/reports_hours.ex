@@ -77,9 +77,11 @@ defmodule ReportsHours do
     build_report(hours, months, years)
   end
 
-  defp merge_maps(map1, map2) do
-    Map.merge(map1, map2, fn _key, value1, value2 -> value1 + value2 end)
+  defp merge_maps(map1, map2) when is_map(map1) do
+    Map.merge(map1, map2, fn _key, value1, value2 -> merge_maps(value1, value2) end)
   end
+
+  defp merge_maps(map1, map2), do: map1 + map2
 
   defp sum_values([person, hour, _day, month, year], %{
          "all_hours" => hours,
