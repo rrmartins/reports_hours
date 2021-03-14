@@ -54,13 +54,7 @@ defmodule ReportsHours do
 
     {:ok, date} = Date.new(year, month, 1)
 
-    month =
-      Calendar.strftime(date, "%b")
-      |> String.downcase()
-      |> String.to_atom()
-
-    mon = Map.put(months[person], month, months[person][month] + hour)
-    months = Map.put(months, person, mon)
+    months = ReportsHours.HoursMonth.call(date, person, months, hour)
 
     yr = Calendar.strftime(date, "%Y")
     year = Map.put(years[person], yr, years[person][yr] + hour)
