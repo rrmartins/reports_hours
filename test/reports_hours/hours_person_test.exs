@@ -6,10 +6,12 @@ defmodule ReportsHours.HoursPersonTest do
   describe "call/3" do
     setup do
       person = "Rodrigo"
+
       hours = %{
         rodrigo: 2
       }
-      hour  = 8
+
+      hour = 8
 
       {:ok, person: person, hours: hours, hour: hour}
     end
