@@ -1,5 +1,5 @@
 defmodule ReportsHours do
-  alias ReportsHours.{Build, Head, HoursPerson, Parser}
+  alias ReportsHours.{Build, Head, HoursMonth, HoursPerson, HoursYear, Parser}
 
   def build(file_name) do
     file_name
@@ -50,15 +50,11 @@ defmodule ReportsHours do
          "hours_per_month" => months,
          "hours_per_year" => years
        }) do
-    %{person: person, hours: hours} = HoursPerson.call(person, hours, hour)
-
     {:ok, date} = Date.new(year, month, 1)
 
-    months = ReportsHours.HoursMonth.call(date, person, months, hour)
-
-    yr = Calendar.strftime(date, "%Y")
-    year = Map.put(years[person], yr, years[person][yr] + hour)
-    years = Map.put(years, person, year)
+    %{person: person, hours: hours} = HoursPerson.call(person, hours, hour)
+    months = HoursMonth.call(date, person, months, hour)
+    years = HoursYear.call(date, person, years, hour)
 
     Build.call(hours, months, years)
   end
