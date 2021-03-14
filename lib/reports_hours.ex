@@ -1,5 +1,5 @@
 defmodule ReportsHours do
-  alias ReportsHours.{Build, Head, Parser}
+  alias ReportsHours.{Build, Head, HoursPerson, Parser}
 
   def build(file_name) do
     file_name
@@ -50,11 +50,7 @@ defmodule ReportsHours do
          "hours_per_month" => months,
          "hours_per_year" => years
        }) do
-    person =
-      String.downcase(person)
-      |> String.to_atom()
-
-    hours = Map.put(hours, person, hours[person] + hour)
+    %{person: person, hours: hours} = HoursPerson.call(person, hours, hour)
 
     {:ok, date} = Date.new(year, month, 1)
 
