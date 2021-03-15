@@ -1,5 +1,7 @@
 # ReportsHours
 
+[![Elixir CI](https://github.com/rrmartins/reports_hours/actions/workflows/elixir.yml/badge.svg?branch=master)](https://github.com/rrmartins/reports_hours/actions/workflows/elixir.yml)
+
 **TODO: Add description**
 
 ## Installation
