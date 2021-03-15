@@ -1,10 +1,10 @@
 defmodule ReportsHours do
-  alias ReportsHours.{Build, Head, HoursMonth, HoursPerson, HoursYear, Parser}
+  alias ReportsHours.{Build, Head, Parser, SumValues}
 
   def build(file_name) do
     file_name
     |> Parser.build()
-    |> Enum.reduce(Head.call(), fn line, report -> sum_values(line, report) end)
+    |> Enum.reduce(Head.call(), fn line, report -> SumValues.call(line, report) end)
   end
 
   def build_many_csv(file_names) when not is_list(file_names) do
@@ -44,18 +44,4 @@ defmodule ReportsHours do
   end
 
   defp merge_maps(map1, map2), do: map1 + map2
-
-  defp sum_values([person, hour, _day, month, year], %{
-         "all_hours" => hours,
-         "hours_per_month" => months,
-         "hours_per_year" => years
-       }) do
-    {:ok, date} = Date.new(year, month, 1)
-
-    %{person: person, hours: hours} = HoursPerson.call(person, hours, hour)
-    months = HoursMonth.call(date, person, months, hour)
-    years = HoursYear.call(date, person, years, hour)
-
-    Build.call(hours, months, years)
-  end
 end
